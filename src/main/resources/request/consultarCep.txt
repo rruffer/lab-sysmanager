@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cli="http://cliente.bean.master.sigep.bsb.correios.com.br/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cli:consultaCEP>
+         <!--Optional:-->
+         <cep>25020150</cep>
+      </cli:consultaCEP>
+   </soapenv:Body>
+</soapenv:Envelope>
