@@ -3,7 +3,6 @@
    <soapenv:Header/>
    <soapenv:Body>
       <cli:consultaCEP>
-         <!--Optional:-->
          <cep>25020150</cep>
       </cli:consultaCEP>
    </soapenv:Body>
