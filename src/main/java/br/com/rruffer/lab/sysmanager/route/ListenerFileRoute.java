@@ -19,12 +19,13 @@ public class ListenerFileRoute extends RouteBuilder {
 		from(URI)
 			.routeId(ID)
 			.convertBodyTo(String.class)
-			.log("li o arquivo...")
-			//.log("${body}")
+			.log("Consumindo arquivo...")
 			.unmarshal(new ListJacksonDataFormat(Cliente.class))
 			.setProperty(AppConstantes.CLIENTES, body())
 			.log("Buscar cidade e estado")
 			.to(CorreiosApiRoute.URI)
+			.log("Salvando clientes...")
+			.to(SqlRoute.INSERT_URI)
 		.end();
 		
 	}

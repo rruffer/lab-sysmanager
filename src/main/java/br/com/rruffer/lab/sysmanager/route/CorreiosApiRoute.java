@@ -31,7 +31,7 @@ public class CorreiosApiRoute extends RouteBuilder {
 			.bean(CreateListCepBean.class)
 			.split(body(), cepAggregationStrategy)
 				.setProperty(AppConstantes.CEP, simple("${body}"))
-				.log("buscar estado e cidade do cep: ${header.cep}")
+				.log("Buscar estado e cidade do cep: ${header.cep}")
 				.setBody().simple("resource:classpath:/request/consultarCep.xml")
 				.transform(simple("${body.replace('PARAM_CEP', ${header.cep})}"))
 				.setHeader(Exchange.CONTENT_TYPE, constant(CONTENT_TYPE))
@@ -43,16 +43,6 @@ public class CorreiosApiRoute extends RouteBuilder {
 		        .setProperty(AppConstantes.ESTADO, xpath("/return/uf/text()"))
 				.log(">>> cidade: ${header.cidade}, estado: ${header.estado}")
 			.end()
-			.to("direct:insert-cliente")
-		.end();
-		
-		from("direct:insert-cliente")
-			.routeId("insert-cliente-id")
-			.log("salvando clientes...")
-			.split(exchangeProperty(AppConstantes.CLIENTES))
-				.to("sql:classpath:sql/insertCliente.sql")
-			.end()
-			.log("clientes salvos...")
 		.end();
 		
 	}
