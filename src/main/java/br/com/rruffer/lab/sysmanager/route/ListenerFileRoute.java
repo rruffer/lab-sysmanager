@@ -5,6 +5,7 @@ import org.apache.camel.component.jackson.ListJacksonDataFormat;
 import org.springframework.stereotype.Service;
 
 import br.com.rruffer.lab.sysmanager.domain.Cliente;
+import br.com.rruffer.lab.sysmanager.util.AppConstantes;
 
 @Service
 public class ListenerFileRoute extends RouteBuilder {
@@ -19,8 +20,9 @@ public class ListenerFileRoute extends RouteBuilder {
 			.routeId(ID)
 			.convertBodyTo(String.class)
 			.log("li o arquivo...")
-			.log("${body}")
+			//.log("${body}")
 			.unmarshal(new ListJacksonDataFormat(Cliente.class))
+			.setProperty(AppConstantes.CLIENTES, body())
 			.log("Buscar cidade e estado")
 			.to(CorreiosApiRoute.URI)
 		.end();
