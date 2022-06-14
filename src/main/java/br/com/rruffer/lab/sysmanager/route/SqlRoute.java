@@ -1,5 +1,8 @@
 package br.com.rruffer.lab.sysmanager.route;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +34,11 @@ public class SqlRoute extends RouteBuilder {
 
 		from(SELECT_URI)
 			.routeId(SELECT_ID)
+			.log("Buscar clientes pelo filtros [cidade: ${header.cidade}, estado: ${header.estado}, minIdade: ${header.minIdade}, maxIdade: ${header.maxIdade}]")
 			.to(SELECT_QUERY_URI)
 			.log("Resultado: ${body}!")
+			.filter(body().method("size").isEqualTo(0))
+			.setHeader(Exchange.HTTP_RESPONSE_CODE,constant(HttpServletResponse.SC_NO_CONTENT))
 		.end();
 		
 	}

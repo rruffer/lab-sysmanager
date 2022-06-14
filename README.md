@@ -1,5 +1,10 @@
 # Getting Started
 
+### Documentação
+* [Swagger UI](http://localhost:8080/swagger-ui/index.html)
+* [Json Doc](http://localhost:8080/lab-sysmanager-api/api-doc)
+
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 

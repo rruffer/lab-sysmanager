@@ -17,7 +17,6 @@ public class RestApiRouteBuilderConfig extends RouteBuilder {
             .apiProperty("api.version", "{{app.rest.api.version}}")
             .apiProperty("cors", "true")
             .apiProperty("schemes", "https")
-            .apiContextRouteId("doc-api")
         .component("servlet")
         .bindingMode(RestBindingMode.json)
         .skipBindingOnErrorCode(false)
