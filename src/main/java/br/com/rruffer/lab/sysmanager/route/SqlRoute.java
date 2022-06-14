@@ -34,7 +34,7 @@ public class SqlRoute extends RouteBuilder {
 
 		from(SELECT_URI)
 			.routeId(SELECT_ID)
-			.log("Buscar clientes pelo filtros [cidade: ${header.cidade}, estado: ${header.estado}, minIdade: ${header.minIdade}, maxIdade: ${header.maxIdade}]")
+			.log("Buscando clientes pelo filtros [cidade: ${header.cidade}, estado: ${header.estado}, minIdade: ${header.minIdade}, maxIdade: ${header.maxIdade}]")
 			.to(SELECT_QUERY_URI)
 			.log("Resultado: ${body}!")
 			.filter(body().method("size").isEqualTo(0))

@@ -1,5 +1,6 @@
 package br.com.rruffer.lab.sysmanager.route.api;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.camel.builder.RouteBuilder;
@@ -18,38 +19,40 @@ public class ClienteApiRestRoute extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		rest(URI_BASE).description("Rest service on IBMS Music API to deal with PrecueSheet Person")
+		rest(URI_BASE).description("Api Clientes Lab Sysmanager")
 
 		.get()
-			.description("Retrieve Person Content by title name")
+			.description("Consulta de Clientes Lab Sysmanager")
 			.produces(MediaType.APPLICATION_JSON)
+			.responseMessage(HttpServletResponse.SC_OK, "Retorna uma lista de clientes")
+			.responseMessage(HttpServletResponse.SC_NO_CONTENT, "Retorna nenhum cliente")
 			.param()
 				.description("Filtrar por cidade.")
 				.type(RestParamType.query)
 				.dataType(String.class.getName())
 				.name("cidade")
-				.required(true)
+				.required(false)
 			.endParam()
 			.param()
 				.description("Filtrar por estado.")
 				.type(RestParamType.query)
 				.dataType(String.class.getName())
 				.name("estado")
-				.required(true)
+				.required(false)
 			.endParam()
 			.param()
 				.description("Filtrar por faixa de idade minima.")
 				.type(RestParamType.query)
 				.dataType(String.class.getName())
 				.name("minIdade")
-				.required(true)
+				.required(false)
 				.endParam()
 			.param()
 				.description("Filtrar por faixa de idade máxima.")
 				.type(RestParamType.query)
 				.dataType(String.class.getName())
 				.name("maxIdade")
-				.required(true)
+				.required(false)
 			.endParam()
 			.to(SqlRoute.SELECT_URI);
 	}
