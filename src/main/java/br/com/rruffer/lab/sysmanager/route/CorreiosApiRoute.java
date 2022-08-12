@@ -4,13 +4,13 @@ import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.cxf.common.message.CxfConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.com.rruffer.lab.sysmanager.aggregator.CepAggregationStrategy;
 import br.com.rruffer.lab.sysmanager.bean.CreateListCepBean;
 import br.com.rruffer.lab.sysmanager.util.AppConstantes;
 
-@Service
+@Component
 public class CorreiosApiRoute extends RouteBuilder {
 	
 	public static final String ID = "{{route.correios.api.id}}";
@@ -37,6 +37,8 @@ public class CorreiosApiRoute extends RouteBuilder {
 				.setHeader(Exchange.CONTENT_TYPE, constant(CONTENT_TYPE))
 				.setHeader(CxfConstants.OPERATION_NAME, constant(OPERATION_NAME_CONSULTA_CEP))
 				.to(SOAP_SERVICE_URI)
+				.log("response: ${body}")
+//				.to("{{route.test}}")
 		        .convertBodyTo(String.class)
 		        .transform().xpath("//*[local-name()='return']")
 		        .setProperty(AppConstantes.CIDADE, xpath("/return/cidade/text()"))

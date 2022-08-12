@@ -1,10 +1,10 @@
 package br.com.rruffer.lab.sysmanager.route.api;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestParamType;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import br.com.rruffer.lab.sysmanager.route.SqlRoute;
@@ -23,7 +23,7 @@ public class ClienteApiRestRoute extends RouteBuilder {
 
 		.get()
 			.description("Consulta de Clientes Lab Sysmanager")
-			.produces(MediaType.APPLICATION_JSON)
+			.produces(MediaType.APPLICATION_JSON.getType())
 			.responseMessage(HttpServletResponse.SC_OK, "Retorna uma lista de clientes")
 			.responseMessage(HttpServletResponse.SC_NO_CONTENT, "Retorna nenhum cliente")
 			.param()

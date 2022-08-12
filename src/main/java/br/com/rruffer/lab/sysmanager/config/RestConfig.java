@@ -14,8 +14,8 @@ public class RestConfig {
 	
 	
 	@Bean
-	ServletRegistrationBean restApiServlet() {
-		final ServletRegistrationBean servlet = new ServletRegistrationBean(new CamelHttpTransportServlet(), String.format("/%s/*", contextPath));
+	ServletRegistrationBean<CamelHttpTransportServlet> restApiServlet() {
+		final ServletRegistrationBean<CamelHttpTransportServlet> servlet = new ServletRegistrationBean<CamelHttpTransportServlet>(new CamelHttpTransportServlet(), String.format("/%s/*", contextPath));
 		servlet.setName("CamelServlet");
 		return servlet;
 	}
