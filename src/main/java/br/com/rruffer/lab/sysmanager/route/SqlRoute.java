@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.com.rruffer.lab.sysmanager.util.AppConstantes;
 
-@Service
+@Component
 public class SqlRoute extends RouteBuilder {
 	
 	public static final String INSERT_ID = "{{route.sql.insert.id}}";

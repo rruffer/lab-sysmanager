@@ -2,12 +2,12 @@ package br.com.rruffer.lab.sysmanager.route;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.ListJacksonDataFormat;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.com.rruffer.lab.sysmanager.domain.Cliente;
 import br.com.rruffer.lab.sysmanager.util.AppConstantes;
 
-@Service
+@Component
 public class ListenerFileRoute extends RouteBuilder {
 	
 	public static final String ID = "{{route.listener.file.id}}";
@@ -26,7 +26,7 @@ public class ListenerFileRoute extends RouteBuilder {
 			.log("Buscar cidade e estado")
 			.to(CorreiosApiRoute.URI)
 			.log("Salvando clientes...")
-			//.to(SqlRoute.INSERT_URI)
+			.to(SqlRoute.INSERT_URI)
 		.end();
 		
 	}

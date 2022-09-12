@@ -48,22 +48,30 @@ class ListenerFileRouteTest {
 	@EndpointInject("mock:soap-address-uri")
 	private MockEndpoint mockCorreiosApi;
 
+	@EndpointInject("mock:sql-insert")
+	private MockEndpoint mockSqlInsert;
+
 	@PropertyInject(value = CorreiosApiRoute.ID)
 	private String correiosApiId;
+
+	@PropertyInject(value = SqlRoute.INSERT_ID)
+	private String sqlInsertId;
 	
 	@BeforeEach
 	private void setup() throws Exception {
-		AdviceWith.adviceWith(camelContext, correiosApiId, route -> routeUtil.mockRoute(route, mockCorreiosApi, CorreiosApiRoute.SOAP_SERVICE_URI));
+		AdviceWith.adviceWith(camelContext, correiosApiId, false, route -> routeUtil.mockRoute(route, mockCorreiosApi, CorreiosApiRoute.SOAP_SERVICE_URI));
+		AdviceWith.adviceWith(camelContext, sqlInsertId, false, route -> routeUtil.mockRoute(route, mockSqlInsert, SqlRoute.INSERT_QUERY_URI));
 	}
 	
 	@AfterEach
 	private void clean() {
 		mockCorreiosApi.reset();
+		mockSqlInsert.reset();
 	}
 	
 	@Test
 	@DisplayName("Salvando clientes com sucesso")
-	void contextLoads() throws Exception {
+	void saveClientsSuccess() throws Exception {
 		
 		mockCorreiosApi.whenAnyExchangeReceived(p -> {
 			String cep = p.getProperty(AppConstantes.CEP, String.class).replace("-", "");
@@ -74,6 +82,9 @@ class ListenerFileRouteTest {
 		
 		mockCorreiosApi.expectedMessageCount(1);
 		mockCorreiosApi.assertIsSatisfied();
+
+		mockSqlInsert.expectedMessageCount(1);
+		mockSqlInsert.assertIsSatisfied();
 		
 	}
 	
