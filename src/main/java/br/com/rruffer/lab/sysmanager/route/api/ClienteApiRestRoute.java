@@ -2,6 +2,7 @@ package br.com.rruffer.lab.sysmanager.route.api;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.camel.PropertyInject;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestParamType;
 import org.springframework.http.MediaType;
@@ -12,7 +13,8 @@ import br.com.rruffer.lab.sysmanager.route.SqlRoute;
 @Component
 public class ClienteApiRestRoute extends RouteBuilder {
 
-	public static final String CLIENTE_GET = "{{route.rest.get.cliente.id}}";
+	@PropertyInject("route.rest.get.cliente.id")
+	public String getId;
 
 	public static final String URI_BASE = "/cliente";
 
@@ -22,6 +24,7 @@ public class ClienteApiRestRoute extends RouteBuilder {
 		rest(URI_BASE).description("Api Clientes Lab Sysmanager")
 
 		.get()
+			.id(getId)
 			.description("Consulta de Clientes Lab Sysmanager")
 			.produces(MediaType.APPLICATION_JSON.getType())
 			.responseMessage(HttpServletResponse.SC_OK, "Retorna uma lista de clientes")

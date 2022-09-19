@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS Cliente;
 
-CREATE TABLE Cliente (
+
+CREATE TABLE IF NOT EXISTS Cliente (
   id bigint primary key NOT NULL AUTO_INCREMENT,
   dataNasc VARCHAR(100) NOT NULL,
   telefoneFixo VARCHAR(100) NOT NULL,

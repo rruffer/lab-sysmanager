@@ -1,0 +1,42 @@
+version: '3.3'
+
+networks:
+  aw-networks:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  
+services:
+  database:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    ports:
+      - 3306:3306
+    volumes:
+     # - ./docker/dbdata:/var/lib/mysql
+      - ./docker/dbdata/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --lower_case_table_names=1
+    environment:
+      - TZ=America/Sao_Paulo
+      - MYSQL_DATABASE=LabSysmanager
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - aw-networks
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./docker/config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - aw-networks
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+     - 3000:3000
+    networks:
+     - aw-networks
