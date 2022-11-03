@@ -4,12 +4,9 @@ import java.io.File;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
-import org.apache.camel.Exchange;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.PropertyInject;
-import org.apache.camel.builder.AdviceWith;
-import org.apache.camel.builder.ExchangeBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.junit.jupiter.api.AfterEach;
@@ -45,10 +42,10 @@ class ListenerFileRouteTest {
 	@Value("classpath:samples/cliente/clientes.json")
 	private Resource payloadClientes;
 	
-	@EndpointInject("mock:soap-address-uri")
+	@EndpointInject("{{route.soap.address.uri}}")
 	private MockEndpoint mockCorreiosApi;
 
-	@EndpointInject("mock:sql-insert")
+	@EndpointInject("{{route.sql.query.insert.uri}}")
 	private MockEndpoint mockSqlInsert;
 
 	@PropertyInject(value = CorreiosApiRoute.ID)
@@ -59,8 +56,8 @@ class ListenerFileRouteTest {
 	
 	@BeforeEach
 	private void setup() throws Exception {
-		AdviceWith.adviceWith(camelContext, correiosApiId, false, route -> routeUtil.mockRoute(route, mockCorreiosApi, CorreiosApiRoute.SOAP_SERVICE_URI));
-		AdviceWith.adviceWith(camelContext, sqlInsertId, false, route -> routeUtil.mockRoute(route, mockSqlInsert, SqlRoute.INSERT_QUERY_URI));
+		//AdviceWith.adviceWith(camelContext, correiosApiId, false, route -> routeUtil.mockRoute(route, mockCorreiosApi, CorreiosApiRoute.SOAP_SERVICE_URI));
+		//AdviceWith.adviceWith(camelContext, sqlInsertId, false, route -> routeUtil.mockRoute(route, mockSqlInsert, SqlRoute.INSERT_QUERY_URI));
 	}
 	
 	@AfterEach
@@ -81,19 +78,23 @@ class ListenerFileRouteTest {
 		startRoute(payloadClientes.getFile());
 		
 		mockCorreiosApi.expectedMessageCount(1);
-		mockCorreiosApi.assertIsSatisfied();
+		mockCorreiosApi.assertIsSatisfied(500);
 
 		mockSqlInsert.expectedMessageCount(1);
-		mockSqlInsert.assertIsSatisfied();
+		mockSqlInsert.assertIsSatisfied(500);
 		
 	}
 	
-	private Exchange startRoute(File payload, String ... proprerties) {
+	/*private Exchange startRoute(File payload, String... proprerties) {
 		var exchangeIn = ExchangeBuilder.anExchange(camelContext)
 				.withBody(payload)
 				.withHeader("CamelFileNameConsumed", payload.getName())
 				.build();
 		return producerTemplate.send(exchangeIn);
+	}*/
+	
+	private void startRoute(File payload) {
+		producerTemplate.sendBodyAndHeader(payload, "CamelFileNameConsumed", payload.getName());
 	}
 
 }
